@@ -1,12 +1,15 @@
 
 import { Container } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="bg-background border-b shadow-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => navigate("/")}>
           <Container className="h-8 w-8 text-primary" />
           <span className="text-2xl font-bold text-foreground">ContainerExpress</span>
         </div>
@@ -20,6 +23,13 @@ const Header = () => {
           <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
             Liên hệ
           </a>
+          <Button 
+            variant="outline" 
+            onClick={() => navigate("/orders")}
+            className="mr-2"
+          >
+            Đơn vận
+          </Button>
           <Button variant="outline">Đăng nhập</Button>
         </nav>
       </div>

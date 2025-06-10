@@ -3,6 +3,13 @@ import { Container } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="bg-gradient-to-br from-primary/5 to-primary/10 py-20">
       <div className="container mx-auto px-4 text-center">
@@ -17,7 +24,7 @@ const HeroSection = () => {
           Giải pháp vận chuyển container thông minh, tiết kiệm và đáng tin cậy. 
           Chúng tôi cung cấp dịch vụ vận chuyển linh hoạt phù hợp với mọi nhu cầu của bạn.
         </p>
-        <Button size="lg" className="text-lg px-8 py-3">
+        <Button size="lg" className="text-lg px-8 py-3" onClick={scrollToServices}>
           Bắt đầu ngay
         </Button>
       </div>
