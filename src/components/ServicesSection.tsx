@@ -2,8 +2,11 @@
 import { Container } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const ServicesSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section id="services" className="py-20 bg-background">
       <div className="container mx-auto px-4">
@@ -52,7 +55,11 @@ const ServicesSection = () => {
                 </div>
               </div>
               <div className="pt-4">
-                <Button className="w-full" size="lg">
+                <Button 
+                  className="w-full" 
+                  size="lg"
+                  onClick={() => navigate("/fcl-booking")}
+                >
                   Đặt Xe Ngay
                 </Button>
               </div>
