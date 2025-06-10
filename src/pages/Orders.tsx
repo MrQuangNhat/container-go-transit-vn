@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Package, Truck, MapPin, Calendar, Eye } from "lucide-react";
+import OrderDetailModal from "@/components/OrderDetailModal";
 
-// Mock data for orders
+// Mock data for orders with new statuses
 const mockOrders = [
   {
     id: "FCL2024001",
@@ -21,7 +22,8 @@ const mockOrders = [
     price: "15,500,000 VND",
     status: "completed",
     createdDate: "2024-01-15",
-    deliveryDate: "2024-01-18"
+    deliveryDate: "2024-01-18",
+    rating: 0
   },
   {
     id: "FCL2024002", 
@@ -43,7 +45,7 @@ const mockOrders = [
     containerType: "Dry Container",
     carrier: "FastShip Solutions",
     price: "14,200,000 VND",
-    status: "pending",
+    status: "pending-payment",
     createdDate: "2024-01-21",
     deliveryDate: "2024-01-24"
   }
@@ -55,7 +57,7 @@ const getStatusColor = (status: string) => {
       return "bg-green-100 text-green-800";
     case "in-transit":
       return "bg-blue-100 text-blue-800";
-    case "pending":
+    case "pending-payment":
       return "bg-yellow-100 text-yellow-800";
     default:
       return "bg-gray-100 text-gray-800";
@@ -68,8 +70,8 @@ const getStatusText = (status: string) => {
       return "Đã hoàn thành";
     case "in-transit":
       return "Đang vận chuyển";
-    case "pending":
-      return "Chờ xác nhận";
+    case "pending-payment":
+      return "Chờ thanh toán";
     default:
       return status;
   }
@@ -77,13 +79,20 @@ const getStatusText = (status: string) => {
 
 const Orders = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredOrders = mockOrders.filter(order => {
     if (activeTab === "all") return true;
     if (activeTab === "completed") return order.status === "completed";
-    if (activeTab === "ongoing") return order.status === "in-transit" || order.status === "pending";
+    if (activeTab === "ongoing") return order.status === "in-transit" || order.status === "pending-payment";
     return true;
   });
+
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -127,7 +136,7 @@ const Orders = () => {
                       <Truck className="h-8 w-8 text-blue-600" />
                       <div>
                         <p className="text-2xl font-bold">
-                          {mockOrders.filter(o => o.status === "in-transit" || o.status === "pending").length}
+                          {mockOrders.filter(o => o.status === "in-transit" || o.status === "pending-payment").length}
                         </p>
                         <p className="text-sm text-muted-foreground">Đang thực hiện</p>
                       </div>
@@ -199,7 +208,11 @@ const Orders = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Button variant="outline" size="sm">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => handleOrderClick(order)}
+                            >
                               <Eye className="h-4 w-4 mr-1" />
                               Chi tiết
                             </Button>
@@ -215,6 +228,12 @@ const Orders = () => {
         </Tabs>
       </div>
       <Footer />
+      
+      <OrderDetailModal 
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

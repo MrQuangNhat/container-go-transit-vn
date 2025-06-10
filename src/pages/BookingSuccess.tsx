@@ -22,10 +22,10 @@ const BookingSuccess = () => {
                 </div>
               </div>
               <CardTitle className="text-3xl text-foreground mb-2">
-                Đặt Xe Thành Công!
+                Tạo Đơn Thành Công!
               </CardTitle>
               <p className="text-lg text-muted-foreground">
-                Đơn hàng của bạn đã được tạo và đang chờ xác nhận từ nhà vận tải
+                Đơn hàng của bạn đã được tạo và đang chờ thanh toán
               </p>
             </CardHeader>
             
@@ -43,7 +43,7 @@ const BookingSuccess = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Trạng thái:</span>
-                    <span className="font-medium text-yellow-600">Chờ xác nhận</span>
+                    <span className="font-medium text-yellow-600">Chờ thanh toán</span>
                   </div>
                 </div>
               </div>
@@ -53,11 +53,11 @@ const BookingSuccess = () => {
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start space-x-2">
                     <span className="font-bold text-primary">1.</span>
-                    <span>Nhà vận tải sẽ liên hệ xác nhận trong vòng 2 giờ</span>
+                    <span>Hoàn tất thanh toán để xác nhận đơn hàng</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="font-bold text-primary">2.</span>
-                    <span>Chuẩn bị hàng hóa và giấy tờ cần thiết</span>
+                    <span>Nhà vận tải sẽ liên hệ sau khi thanh toán thành công</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <span className="font-bold text-primary">3.</span>
