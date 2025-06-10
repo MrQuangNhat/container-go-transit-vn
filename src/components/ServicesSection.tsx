@@ -101,7 +101,12 @@ const ServicesSection = () => {
                 </div>
               </div>
               <div className="pt-4">
-                <Button variant="secondary" className="w-full" size="lg">
+                <Button 
+                  variant="secondary" 
+                  className="w-full" 
+                  size="lg"
+                  onClick={() => navigate("/lcl-booking")}
+                >
                   Tạo Đơn Hàng Lẻ
                 </Button>
               </div>
