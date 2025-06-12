@@ -30,6 +30,13 @@ const Header = () => {
           >
             Đơn vận
           </Button>
+          <Button 
+            variant="outline"
+            onClick={() => navigate("/carrier-registration")}
+            className="mr-2"
+          >
+            Bạn là đơn vị vận tải?
+          </Button>
           <Button variant="outline">Đăng nhập</Button>
         </nav>
       </div>
