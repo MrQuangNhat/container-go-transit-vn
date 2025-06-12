@@ -7,11 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Package, Truck, MapPin, Calendar, Eye } from "lucide-react";
+import { Package, Truck, MapPin, Calendar, Eye, Trash2 } from "lucide-react";
 import OrderDetailModal from "@/components/OrderDetailModal";
 
 // Mock data for orders with new statuses
-const mockOrders = [
+const mockOrdersData = [
   {
     id: "FCL2024001",
     from: "TP. Hồ Chí Minh",
@@ -81,17 +81,23 @@ const Orders = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [orders, setOrders] = useState(mockOrdersData);
 
-  const filteredOrders = mockOrders.filter(order => {
+  const filteredOrders = orders.filter(order => {
     if (activeTab === "all") return true;
     if (activeTab === "completed") return order.status === "completed";
-    if (activeTab === "ongoing") return order.status === "in-transit" || order.status === "pending-payment";
+    if (activeTab === "ongoing") return order.status === "in-transit";
+    if (activeTab === "pending-payment") return order.status === "pending-payment";
     return true;
   });
 
   const handleOrderClick = (order) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
+  };
+
+  const handleCancelOrder = (orderId: string) => {
+    setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
   };
 
   return (
@@ -108,23 +114,38 @@ const Orders = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="all">Tất cả đơn hàng</TabsTrigger>
-            <TabsTrigger value="ongoing">Đang thực hiện</TabsTrigger>
+            <TabsTrigger value="pending-payment">Chờ thanh toán</TabsTrigger>
+            <TabsTrigger value="ongoing">Đang vận chuyển</TabsTrigger>
             <TabsTrigger value="completed">Đã hoàn thành</TabsTrigger>
           </TabsList>
 
           <TabsContent value={activeTab} className="space-y-6">
             <div className="grid gap-6">
               {/* Summary Cards */}
-              <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <div className="grid md:grid-cols-4 gap-4 mb-6">
                 <Card>
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-2">
                       <Package className="h-8 w-8 text-primary" />
                       <div>
-                        <p className="text-2xl font-bold">{mockOrders.length}</p>
+                        <p className="text-2xl font-bold">{orders.length}</p>
                         <p className="text-sm text-muted-foreground">Tổng đơn hàng</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-2">
+                      <Package className="h-8 w-8 text-yellow-600" />
+                      <div>
+                        <p className="text-2xl font-bold">
+                          {orders.filter(o => o.status === "pending-payment").length}
+                        </p>
+                        <p className="text-sm text-muted-foreground">Chờ thanh toán</p>
                       </div>
                     </div>
                   </CardContent>
@@ -136,9 +157,9 @@ const Orders = () => {
                       <Truck className="h-8 w-8 text-blue-600" />
                       <div>
                         <p className="text-2xl font-bold">
-                          {mockOrders.filter(o => o.status === "in-transit" || o.status === "pending-payment").length}
+                          {orders.filter(o => o.status === "in-transit").length}
                         </p>
-                        <p className="text-sm text-muted-foreground">Đang thực hiện</p>
+                        <p className="text-sm text-muted-foreground">Đang vận chuyển</p>
                       </div>
                     </div>
                   </CardContent>
@@ -150,7 +171,7 @@ const Orders = () => {
                       <Package className="h-8 w-8 text-green-600" />
                       <div>
                         <p className="text-2xl font-bold">
-                          {mockOrders.filter(o => o.status === "completed").length}
+                          {orders.filter(o => o.status === "completed").length}
                         </p>
                         <p className="text-sm text-muted-foreground">Đã hoàn thành</p>
                       </div>
@@ -208,14 +229,26 @@ const Orders = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={() => handleOrderClick(order)}
-                            >
-                              <Eye className="h-4 w-4 mr-1" />
-                              Chi tiết
-                            </Button>
+                            <div className="flex space-x-2">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleOrderClick(order)}
+                              >
+                                <Eye className="h-4 w-4 mr-1" />
+                                Chi tiết
+                              </Button>
+                              {order.status === "pending-payment" && (
+                                <Button 
+                                  variant="destructive" 
+                                  size="sm"
+                                  onClick={() => handleCancelOrder(order.id)}
+                                >
+                                  <Trash2 className="h-4 w-4 mr-1" />
+                                  Hủy đơn
+                                </Button>
+                              )}
+                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
