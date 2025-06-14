@@ -38,7 +38,12 @@ const Header = () => {
           >
             Bạn là đơn vị vận tải?
           </Button>
-          <ProfileDialog />
+          <Button
+            variant="outline"
+            onClick={() => navigate("/profile")}
+          >
+            Your Profile
+          </Button>
           <Button variant="outline">Đăng nhập</Button>
         </nav>
       </div>
