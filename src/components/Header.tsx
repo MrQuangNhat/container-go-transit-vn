@@ -2,6 +2,7 @@
 import { Container } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import ProfileDialog from "./ProfileDialog";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const Header = () => {
           >
             Bạn là đơn vị vận tải?
           </Button>
+          <ProfileDialog />
           <Button variant="outline">Đăng nhập</Button>
         </nav>
       </div>
